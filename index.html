@@ -1,222 +1,136 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guida Ristoranti Italia 🍝 – Menu Interattivi</title>
-  <meta name="description" content="Guida interattiva ai migliori ristoranti, osterie, pasticcerie e bar italiani con menu dettagliati, prezzi e mappa." />
-  <meta property="og:title" content="Guida Ristoranti d'Italia" />
-  <meta property="og:description" content="500 locali selezionati con menu, prezzi e prenotazioni in tempo reale." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guida Ristoranti Italia 🍝 – Menu Interattivi & Prenotazioni Premium</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css" />
-  <link rel="stylesheet" href="style.css" />
-  <script id="jsonld-restaurant" type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Guida Ristoranti d'Italia","url":"https://guidaristoranti.it"}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <script src="https://unpkg.com/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 </head>
 <body>
-
-<!-- ===== CREDITS BAR ===== -->
 <div class="top-credit-bar">
-  <div>Questo sito è stato creato da <strong>Claudio Baschieri</strong></div>
-  <div id="last-update-bar" style="font-size: .8rem; color: #a48c68; margin-top: 4px; font-weight: 500;">
-    🔄 Verifica server in corso...
-  </div>
+  <span>✨ Piattaforma Certificata Eccellenza 2026</span>
+  <span id="last-update-bar"></span>
 </div>
-
-<!-- ===== HEADER ===== -->
 <header class="site-header">
   <div class="header-inner">
-    <div class="logo">
-      <span class="logo-icon">🍝</span>
-      <div>
-        <h1 class="logo-title">Guida Ristoranti d'Italia</h1>
-        <p class="logo-sub">Menu interattivi · Prezzi reali · Oltre 30 locali</p>
+    <div class="logo" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      <span class="logo-emoji">🍽️</span>
+      <div class="logo-text">
+        <h1>Guida Ristoranti</h1>
+        <p>Sapori d'Italia selezionati</p>
       </div>
     </div>
-    <div class="filters-dropdown">
-      <select id="categoryFilter" class="category-select">
-        <option value="all">Tutte le categorie</option>
-        <option value="ristorante">🍴 Ristoranti</option>
-        <option value="osteria">🍷 Osterie</option>
-        <option value="pasticceria">🥐 Pasticcerie</option>
-        <option value="bar">☕ Bar</option>
-        <option value="pizzeria">🍕 Pizzerie</option>
-      </select>
-      <select id="priceFilter" class="category-select">
-        <option value="all">Tutti i prezzi</option>
-        <option value="low">€ Economico (&lt;30€)</option>
-        <option value="mid">€€ Medio (30-60€)</option>
-        <option value="high">€€€ Premium (&gt;60€)</option>
-      </select>
-      <select id="starsFilter" class="category-select">
-        <option value="all">Tutte le stelle</option>
-        <option value="4.5">⭐ 4.5+</option>
-        <option value="4">⭐ 4.0+</option>
-        <option value="3.5">⭐ 3.5+</option>
-      </select>
-    </div>
-    <div class="search-wrap">
-      <input id="searchInput" type="text" placeholder="Cerca ristorante, città o regione…" />
-      <span class="search-icon">🔍</span>
-    </div>
-    <button id="themeToggle" class="theme-toggle" title="Cambia tema" aria-label="Toggle Dark/Light mode">🌙</button>
+    <nav class="main-nav">
+      <div class="filter-group">
+        <label for="categoryFilter">Scegli la tua tentazione:</label>
+        <select id="categoryFilter">
+          <option value="all">Sfoglia categorie...</option>
+          <option value="ristorante">🍝 Ristorante Gourmet</option>
+          <option value="osteria">🍷 Osteria & Trattoria</option>
+          <option value="pizzeria">🍕 Pizzeria Verace</option>
+          <option value="bar">🍸 Cocktail Bar & Tapas</option>
+          <option value="pasticceria">🍰 Pasticceria & Gelateria</option>
+        </select>
+      </div>
+      
+      <div class="search-wrap">
+        <span class="material-icons-round">search</span>
+        <input type="text" id="searchInput" placeholder="Trova l'ispirazione (città, nome)...">
+      </div>
+      <button id="luckyBtn" class="lucky-btn" title="Mi Sento Fortunato">✨ Mi Sento Fortunato</button>
+      <button id="luckyBtn" class="lucky-btn" title="Mi Sento Fortunato">✨</button>
+      
+      <button id="themeToggle" class="theme-toggle" title="Cambia tema">🌙</button>
+    </nav>
   </div>
 </header>
-
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <video autoplay muted loop playsinline class="hero-video-bg" poster="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=80">
-    <source src="https://videos.pexels.com/video-files/3205827/3205827-hd_1920_1080_25fps.mp4" type="video/mp4">
-  </video>
-  <div class="hero-content">
-    <p class="hero-tag">🇮🇹 La vera cucina italiana</p>
-    <h2 class="hero-title">Scopri i Sapori<br/><em>d'Italia</em></h2>
-    <p class="hero-desc">Un viaggio esclusivo nell'eccellenza culinaria italiana. Dalle trattorie storiche ai ristoranti stellati, esplora una selezione curata dei migliori locali con menu reali, prezzi trasparenti e prenotazioni in tempo reale.</p>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h2 class="hero-title">Esperienze Culinarie <br><span>Selezionate</span></h2>
+      <p class="hero-subtitle">Esplora i menu dei 500 migliori locali d'Italia. Dalla tradizione secolare all'innovazione Michelin, la tua prossima cena indimenticabile inizia qui.</p>
+      <div class="hero-actions">
+        <button class="cta-btn primary" onclick="document.getElementById('restaurant-grid').scrollIntoView({behavior:'smooth'})">Sfoglia i Locali ↓</button>
+        <button class="cta-btn secondary" onclick="startChefQuiz()">Sfida lo Chef 👨‍🍳</button>
+      </div>
+    </div>
+    <div class="hero-map-wrap">
+       <div id="map"></div>
+    </div>
+  </section>
+  <section class="category-tabs-wrap">
+    <div class="category-tabs">
+      <button class="cat-tab active" data-cat="all">Tutti</button>
+      <button class="cat-tab" data-cat="ristorante">Gourmet</button>
+      <button class="cat-tab" data-cat="pizzeria">Pizze</button>
+      <button class="cat-tab" data-cat="osteria">Osterie</button>
+      <button class="cat-tab" data-cat="bar">Aperitivo</button>
+      <button class="cat-tab" data-cat="pasticceria">Dolci</button>
+    </div>
     
-    <div class="hero-stats">
-      <div class="stat"><strong id="countRest">500</strong><span>Ristoranti</span></div>
-      <div class="stat"><strong>🇮🇹</strong><span>20 Regioni</span></div>
-      <div class="stat"><strong>⭐</strong><span>Menu Reali</span></div>
+    <!-- Nuovi Filtri Rapidi -->
+    <div class="quick-filters" style="display:flex; justify-content:center; gap:15px; margin-bottom:30px;">
+       <select id="priceFilter" style="padding:8px 12px; border-radius:12px; background:var(--dark2); color:#fff; border:1px solid rgba(255,255,255,0.1);">
+          <option value="all">Tutti i prezzi</option>
+          <option value="low">€ Economico</option>
+          <option value="mid">€€ Medio</option>
+          <option value="high">€€€ Esclusivo</option>
+       </select>
+       <select id="starsFilter" style="padding:8px 12px; border-radius:12px; background:var(--dark2); color:#fff; border:1px solid rgba(255,255,255,0.1);">
+          <option value="all">Tutte le stelle</option>
+          <option value="5">★★★★★ (Elite)</option>
+          <option value="4">★★★★☆ (Ottimo)</option>
+       </select>
     </div>
-    <button class="cta-btn" onclick="document.getElementById('restaurant-grid').scrollIntoView({behavior:'smooth'})">
-      Sfoglia i Locali ↓
-    </button>
-  </div>
-  <div class="hero-map-wrap">
-    <div id="map"></div>
-  </div>
-</section>
-
-<!-- ===== RESTAURANT GRID ===== -->
-<main id="restaurant-grid" class="restaurant-section">
-  <div class="section-head">
-    <h2>I Nostri Ristoranti</h2>
-    <p>Clicca su un locale per aprire il menu completo</p>
-  </div>
-  <div class="category-tabs" id="categoryTabs">
-    <button class="cat-tab active" data-cat="all">Tutti</button>
-    <button class="cat-tab" data-cat="ristorante">🍝 Ristoranti</button>
-    <button class="cat-tab" data-cat="pizzeria">🍕 Pizzerie</button>
-    <button class="cat-tab" data-cat="osteria">🍷 Osterie</button>
-    <button class="cat-tab" data-cat="bar">🍸 Bar / Pub</button>
-    <button class="cat-tab" data-cat="pasticceria">🍰 Pasticcerie</button>
-  </div>
-  <div class="cards-grid" id="cardsGrid"></div>
+  </section>
+  <section id="restaurant-grid" class="restaurant-section">
+    <div class="section-head">
+      <h2>Locali Consigliati</h2>
+      <p>Ispirati dai gusti della nostra community</p>
+    </div>
+    <div class="cards-grid" id="cardsGrid">
+      <!-- Inizialmente Skeleton Loader tramite JS -->
+    </div>
+  </section>
+  <!-- ===== SFIDA LO CHEF (Mini-Gioco Quiz) ===== -->
+  <section id="chef-challenge" class="chef-section">
+    <div class="quiz-progress"><div id="quizBar" class="quiz-bar"></div></div>
+    <div id="quizIntro">
+      <h2 style="font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:3rem;margin-bottom:10px">Sfida lo Chef</h2>
+      <p style="color:#a0a0a0;font-size:1.2rem;margin-bottom:30px">Dimostra di essere un vero intenditore della cucina italiana.<br>Supera le 5 domande per vincere un <strong>premio esclusivo</strong>.</p>
+      <button onclick="startChefQuiz()" style="background:var(--gold);color:#000;border:none;border-radius:30px;padding:16px 40px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif;font-size:1.1rem;transition:0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Inizia la Sfida 👨‍🍳</button>
+    </div>
+    
+    <div id="quizGame" style="display:none;" class="quiz-container">
+      <div id="quizQuestion" class="quiz-question">...</div>
+      <div id="quizOptions" class="quiz-options"></div>
+    </div>
+    <div id="quizReward" class="reward-card">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;margin-bottom:10px">Complimenti Chef! 🏆</h3>
+      <p style="font-size:1.2rem;margin-bottom:20px">Hai dimostrato un gusto impeccabile. Ecco il tuo premio:</p>
+      <div style="background:rgba(0,0,0,0.1);padding:15px;border-radius:12px;font-family:monospace;font-size:1.8rem;font-weight:700;letter-spacing:2px;margin-bottom:20px">CHEF-ELITE-2026</div>
+      <p style="font-size:.9rem;opacity:0.8">Copia questo codice per uno sconto del 10% sulla tua prossima prenotazione reale.</p>
+    </div>
+  </section>
+  <!-- ===== INSTAGRAM FEED ===== -->
+  <section style="max-width: 1400px; margin: 60px auto 40px; padding: 0 24px; text-align: center;">
+    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--dark); margin-bottom: 8px;">Seguici su Instagram</h3>
+    <p style="color: var(--muted); margin-bottom: 24px;">Condividi la tua esperienza con #GuidaRistoranti</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+      <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
+      <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
+      <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
+      <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
+      <img src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
+    </div>
+  </section>
 </main>
-
-<!-- ===== MENU MODAL ===== -->
-<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <button class="modal-close" id="modalClose" aria-label="Chiudi menu">✕</button>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
-<!-- ===== BOOKING MODAL (PRENOTAZIONI) ===== -->
-<div class="modal-overlay" id="bookModal" role="dialog" aria-modal="true" style="z-index: 10005;">
-  <div class="book-box">
-    <button class="modal-close" id="bookClose" aria-label="Chiudi prenotazione">✕</button>
-    <div class="book-header">
-      <h2 id="bookRestName">Prenota un Tavolo</h2>
-      <p>Compila i dati per inviare la richiesta di prenotazione ufficiale.</p>
-    </div>
-    <form id="bookForm" class="book-form">
-      <div class="form-group">
-        <label>Nome e Cognome</label>
-        <input type="text" id="bookName" required placeholder="Es. Mario Rossi">
-      </div>
-      <div class="form-row">
-        <div class="form-group half">
-          <label>Telefono</label>
-          <input type="tel" id="bookPhone" required placeholder="Es. 333 1234567">
-        </div>
-        <div class="form-group half">
-          <label>Email</label>
-          <input type="email" id="bookEmail" required placeholder="mario@email.com">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group half">
-          <label>Data e Orario</label>
-          <input type="datetime-local" id="bookTime" required>
-        </div>
-        <div class="form-group half">
-          <label>Persone</label>
-          <input type="number" id="bookGuests" min="1" max="20" required value="2">
-        </div>
-      </div>
-      <button type="submit" class="book-submit-btn">Conferma Prenotazione</button>
-    </form>
-  </div>
-</div>
-
-<!-- ===== AI CHATBOT VIRTUAL SOMMELIER ===== -->
-<div id="chatbot-overlay" class="chatbot-overlay hidden"></div>
-
-<button id="chatbot-fab" class="chatbot-fab">
-  <span class="material-icons-round">smart_toy</span>
-</button>
-
-<div id="chatbot-window" class="chatbot-window hidden">
-  <div class="chatbot-header">
-    <div class="chat-header-info">
-      <div class="chat-avatar-wrapper">
-        <span class="chat-status-dot"></span>
-        🤖
-      </div>
-      <div>
-        <strong>Sommelier V.I.P.</strong>
-        <p>🟢 Online — Intelligenza Artificiale</p>
-      </div>
-    </div>
-    <button id="chatbot-close" class="chatbot-close">✕</button>
-  </div>
-  <div id="chatbot-messages" class="chatbot-messages">
-    <div class="msg-row ai-row">
-      <div class="msg-avatar">🤖</div>
-      <div class="msg ai-msg">
-        Benvenuto nel tuo assistente culinario <strong>AI Premium</strong>. Elaboro in tempo reale il database dei 500 migliori locali italiani. 
-        <br><br>Quali sapori stai cercando oggi? Dimmi un piatto, una città o un'atmosfera!
-      </div>
-    </div>
-  </div>
-  
-  <div id="chat-typing" class="chat-typing hidden">
-    <div class="msg-avatar">🤖</div>
-    <div class="typing-dots"><span></span><span></span><span></span></div>
-  </div>
-
-  <div class="chat-quick-replies">
-    <button class="quick-reply" onclick="sendQuickReply('Consigliami una cena romantica')">🕯️ Cena romantica</button>
-    <button class="quick-reply" onclick="sendQuickReply('💸 Locale economico per studenti')">💸 Economico</button>
-    <button class="quick-reply" onclick="sendQuickReply('Voglio mangiare una bistecca indimenticabile')">🥩 Bistecca Top</button>
-    <button class="quick-reply" onclick="sendQuickReply('Cerco tapas e aperitivo in centro')">🍸 Aperitivo</button>
-  </div>
-
-  <div class="chatbot-input">
-    <input type="text" id="chat-input-text" placeholder="Es. 'Pizzerie a Roma' o 'Pesce a Napoli'..." autocomplete="off">
-    <button id="chat-send-btn"><span class="material-icons-round">send</span></button>
-  </div>
-</div>
-
-<!-- ===== INSTAGRAM FEED ===== -->
-<section style="max-width: 1400px; margin: 60px auto 40px; padding: 0 24px; text-align: center;">
-  <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--dark); margin-bottom: 8px;">Seguici su Instagram</h3>
-  <p style="color: var(--muted); margin-bottom: 24px;">Condividi la tua esperienza con #GuidaRistoranti</p>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-    <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
-    <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
-    <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
-    <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
-    <img src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=400" loading="lazy" style="width:100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Food">
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-col">
@@ -258,11 +172,79 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Guida Ristoranti d'Italia — Creato da <strong>Claudio Baschieri</strong> con ❤️ in Italia</p>
+    <p>© 2026 Guida Ristoranti d'Italia — Creato da <strong>Claudio Baschieri</strong> con ❤️ in Italia <button id="easterEggSpicy" class="easter-egg-btn" title="???">🌶️</button></p>
     <p>I prezzi sono indicativi e soggetti a variazioni stagionali.</p>
   </div>
 </footer>
-
+<!-- ===== OVERLAYS (Gestiti alla fine del body per corretto z-index globale) ===== -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Chiudi menu">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="bookModal" role="dialog" aria-modal="true">
+  <div class="book-box">
+    <button class="modal-close" id="bookClose" aria-label="Chiudi prenotazione">✕</button>
+    <div id="bookingSpinner" class="booking-spinner">
+      <div class="spinner-ring"></div>
+      <p class="spinner-text">Elaborazione prenotazione in corso…</p>
+    </div>
+    <div id="bookingSuccess" class="booking-success">
+      <div class="success-circle">✓</div>
+      <h3>Tavolo riservato!</h3>
+      <p>Riceverai presto una mail di conferma.</p>
+      <button onclick="document.getElementById('bookModal').classList.remove('open')">Chiudi</button>
+    </div>
+    <div id="bookFormContainer">
+      <div class="book-header">
+        <h2 id="bookRestName">Riserva il tuo Posto</h2>
+      </div>
+      <form id="bookForm" class="book-form">
+        <input type="text" placeholder="Nome" required>
+        <input type="email" placeholder="Email" required>
+        <button type="submit" class="book-submit-btn">Conferma</button>
+      </form>
+    </div>
+  </div>
+</div>
+<button id="slotBtn" class="slot-floating-btn" title="Non so cosa scegliere? Menu Degustazione!">🍷</button>
+<div id="slotOverlay" class="slot-machine-overlay" role="dialog" aria-modal="true">
+  <div class="slot-machine-box">
+    <h2 style="font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:2.5rem;margin:0">🎰 Menu Degustazione</h2>
+    <div class="slot-machine-box">
+      <button id="slotClose" class="slot-close" aria-label="Chiudi slot">✕</button>
+      <h2 style="font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:2.5rem;margin:0">🎰 Menu Degustazione</h2>
+    <div id="slotDisplay" class="slot-display">...</div>
+    <div id="slotFinal" style="display:none;margin-top:20px">
+      <button id="slotGoBtn" style="background:var(--gold);color:#000;border:none;border-radius:30px;padding:12px 30px;font-weight:700;cursor:pointer;">Prenota questo locale</button>
+    </div>
+  </div>
+</div>
+<div id="chatbot-overlay" class="chatbot-overlay hidden"></div>
+<button id="chatbot-fab" class="chatbot-fab">
+  <span class="material-icons-round">smart_toy</span>
+</button>
+<div id="chatbot-window" class="chatbot-window hidden">
+  <div class="chatbot-header">
+    <div class="chat-header-info">
+      <strong>Sommelier V.I.P.</strong>
+      <p>🟢 Online</p>
+    </div>
+    <button id="chatbot-close" class="chatbot-close">✕</button>
+  </div>
+  <div id="chatbot-messages" class="chatbot-messages"></div>
+  <div class="chat-quick-replies">
+    <button class="quick-reply" onclick="sendQuickReply('Consigliami una cena romantica')">🕯️ Cena romantica</button>
+    <button class="quick-reply" onclick="sendQuickReply('💸 Locale economico')">💸 Economico</button>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" id="chat-input-text" placeholder="Scrivi qui..." autocomplete="off">
+    <button id="chat-send-btn"><span class="material-icons-round">send</span></button>
+  </div>
+</div>
+<div id="confettiContainer" class="confetti-gold"></div>
+<div id="toast-container"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
 <script src="data.js"></script>
