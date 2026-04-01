@@ -1,6 +1,5 @@
 // --- GENERATORE AUTOMATICO DI 500 LOCALI A RUNTIME --- //
 // Invece di scrivere 15.000 righe di codice, questo script istanzia in memoria 500 locali iper-realistici e dettagliati.
-
 const CITIES = [
   { name: "Roma", lat: 41.9028, lng: 12.4964 },
   { name: "Milano", lat: 45.4642, lng: 9.1900 },
@@ -29,7 +28,6 @@ const CITIES = [
   { name: "Ravenna", lat: 44.4184, lng: 12.1973 },
   { name: "Como", lat: 45.8081, lng: 9.0852 }
 ];
-
 const TEMPLATES = {
   ristorante: {
     emoji: "🍝", maxP: 180, minP: 35, descVar: "Cucina gourmet di altissimo livello. Piatti della tradizione rivisitati e grandi materie prime, perfetto per una cena romantica o di classe.",
@@ -83,7 +81,6 @@ const TEMPLATES = {
     }
   }
 };
-
 const NOMI_AGGETTIVI = {
   ristorante: ["La Pergola", "Il Faro", "Da Vittorio", "La Terrazza", "Il Gattopardo", "Dal Pescatore", "La Rosetta", "Antico Arco", "Il Girasole", "Armando", "Cracco", "Piazza Duomo", "Uliassi", "Reale", "Enoteca Pinchiorri", "Le Calandre", "Osteria Francescana", "Don Alfonso", "Il Pagliaccio", "St. Hubertus", "La Peca", "Villa Crespi"],
   osteria: ["La Fraschetta", "Al Bacco", "Del Chianti", "La Vecchia Lira", "Da Peppe", "Il Cinghiale Errante", "Sora Lella", "Del Viandante", "Osteria N.1", "La Cantina", "Trattoria Zà Zà", "Casetta Trastevere", "I Due Ladroni", "Antica Trattoria", "Hostaria", "L'Archetto", "Osteria della Suburra", "Da Enzo", "Nonna Rosa"],
@@ -91,7 +88,6 @@ const NOMI_AGGETTIVI = {
   bar: ["Centrale", "Navigli", "Sport", "Roma", "Milano", "Gran Caffè", "Il Chiosco", "Nazionale", "Venezia", "Belvedere", "Caffè Florian", "Caffè Greco", "Gambrinus", "Camparino", "Harry's Bar", "Caffè Pedrocchi", "Caffè Paszkowski", "Al Bicerin", "Caffè Platti"],
   pasticceria: ["Marchesi", "Siciliana", "Napoli", "Dolce Vita", "Artigianale", "Delizie", "Pasticceria Reale", "Zucchero a Velo", "L'Eclair", "Il Bignè", "Iginio Massari", "Sal De Riso", "Knam", "Martesana", "Cova", "Pasticceria Veneto", "Pinsa e Dolci", "Il Guelfo"]
 };
-
 const REVIEWS_POOL = {
   ristorante: ["Cibo spettacolare, la cura del dettaglio è folle. Consigliatissimo!", "Una location da sogno e piatti prelibati.", "Il conto è importante, ma l'esperienza li vale tutti.", "Personale fantastico, ritornerò sicuramente per l'anniversario.", "Un percorso di degustazione indimenticabile."],
   osteria: ["La vera cucina di una volta, come a casa di nonna!", "Porzioni enormi e vino della casa di qualità. Prezzi top.", "Ambiente rustico, personale alla mano e cibo verace.", "Carbonara pazzesca, la migliore della città senza dubbio.", "Un tuffo nei sapori genuini, ci siamo sentiti in famiglia."],
@@ -99,7 +95,6 @@ const REVIEWS_POOL = {
   bar: ["Cocktail strepitosi, il miglior aperitivo in centro.", "Spritz abbondante e tante tapas gratis, consigliato per studenti.", "Caffè buonissimo e cornetti caldi anche a tarda mattinata.", "Atmosfera rilassata, perfetto per lo smart working o due chiacchiere.", "Servizio veloce e personale simpaticissimo, una garanzia."],
   pasticceria: ["I loro cannoncini sono illegali, dolci pazzeschi!", "Torte moderne bellissime e buonissime. Ideale per compleanni.", "Il miglior cannolo siciliano mai mangiato al nord.", "Brioche enormi ripieni di pistacchio... un paradiso.", "Qualità artigianale altissima, prezzi onesti e locale profumatissimo."]
 };
-
 // URL Immagini Unsplash stabili e senza blocchi CORS
 // URL Immagine singola e rappresentativa per categoria
 const CATEGORY_IMAGE = {
@@ -109,12 +104,10 @@ const CATEGORY_IMAGE = {
   bar: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
   pasticceria: "https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=600&q=80"
 };
-
 function generate500Restaurants() {
   const result = [];
   let id = 1;
   const cats = ["ristorante", "osteria", "pizzeria", "bar", "pasticceria"];
-
   for (let i = 0; i < 500; i++) {
     const cat = cats[i % cats.length];
     const cityObj = CITIES[i % CITIES.length];
@@ -127,7 +120,6 @@ function generate500Restaurants() {
     
     let urlSlug = encodeURIComponent(nome + " " + cityObj.name + " ristorante");
     let website = "https://www.google.com/search?q=" + urlSlug;
-
     let latOffset = (Math.random() - 0.5) * 0.08;
     let lngOffset = (Math.random() - 0.5) * 0.08;
     
@@ -142,7 +134,6 @@ function generate500Restaurants() {
     let ratingVal = (Math.random() * (5.0 - 3.8) + 3.8).toFixed(1); // da 3.8 a 5.0
     let reviewsCount = Math.floor(Math.random() * 2500) + 50; 
     let topReview = REVIEWS_POOL[cat][Math.floor(Math.random() * REVIEWS_POOL[cat].length)];
-
     // Generazione Array di 3 Recensioni "Reali" Utenti
     const nomiUtenti = ["Marco R.", "Giulia T.", "Alessandro M.", "Chiara F.", "Luca P.", "Francesca S.", "Matteo B.", "Sara V.", "Davide C.", "Elena N."];
     let recensioniReali = [];
@@ -158,11 +149,9 @@ function generate500Restaurants() {
         date: `${dateOffset} giorni fa`
       });
     }
-
     // Stelle in base alla categoria
     let starsArr = ["★★★★☆", "★★★★★"];
     if (cat === "osteria" || cat === "bar") starsArr = ["★★★☆☆", "★★★★☆"];
-
     // Generazione allergeni random nel menu
     let clonedMenu = JSON.parse(JSON.stringify(tpl.menu));
     Object.keys(clonedMenu).forEach(category => {
@@ -173,11 +162,9 @@ function generate500Restaurants() {
         item.allergens = (hasVegetarian + " " + hasGlutenFree + " " + hasNuts).trim();
       });
     });
-
     let filosofia = "Siamo fieri promotori della filiera corta e del KM zero. Le nostre materie prime provengono da produttori locali selezionati, garantendo freschezza assoluta, rispetto della stagionalità e sostenibilità ambientale.";
     
     let imageUrl = CATEGORY_IMAGE[cat];
-
     let item = {
       id: id++,
       name: nome,
@@ -208,15 +195,16 @@ function generate500Restaurants() {
   }
   return result;
 }
-
 // ── ESECUZIONE & CACHE GIORNALIERA ──
 // Il database si aggiorna a mezzanotte. Finché la giornata non cambia, usa la cache salvata.
 const todayStr = new Date().toLocaleDateString("it-IT"); // Es: "01/04/2026"
 const LS_KEY = "resto_data_v5_" + todayStr.replace(/\//g, "-");
-
 let RESTAURANTS = [];
 let storedData = localStorage.getItem(LS_KEY);
-
+let storedData = null;
+try {
+  storedData = localStorage.getItem(LS_KEY);
+} catch (e) { console.warn("L.S. Access Blocked."); }
 if (storedData) {
   // Se l'utente ha già caricato il sito oggi, carica il database fisso (Persistenza)
   RESTAURANTS = JSON.parse(storedData);
@@ -227,10 +215,21 @@ if (storedData) {
       localStorage.removeItem(key);
     }
   });
-
+  try {
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith("resto_data_") || key.startsWith("booking_")) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch(e) {}
   // Genera i 500 locali aggionati
   RESTAURANTS = generate500Restaurants();
-
   // Salvalo nel LocalStorage per bloccarlo per tutto il resto della giornata
   localStorage.setItem(LS_KEY, JSON.stringify(RESTAURANTS));
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(RESTAURANTS));
+  } catch (err) {
+    console.warn("LocalStorage Full: data not cached, using session memory.", err);
+  }
 }
+window.RESTAURANTS = RESTAURANTS;
