@@ -1,241 +1,64 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 – Piatto Non Trovato | Guida Ristoranti d'Italia</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ops! Piatto Finito – 404</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #d4af37; --bg: #0c0c0c; --text: #f0ebd8; }
+    body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; text-align: center; }
+    .container { max-width: 600px; padding: 20px; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: 4rem; color: var(--gold); margin: 0; }
+    p { font-size: 1.1rem; color: #a0a0a0; margin: 20px 0 40px; line-height: 1.6; }
+    
+    /* ── BROKEN PLATE ANIMATION ── */
+    .plate-wrap { position: relative; width: 200px; height: 200px; margin: 0 auto 50px; }
+    .plate { width: 170px; height: 170px; background: #fff; border-radius: 50%; border: 8px solid #eee; position: absolute; top: 0; left: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform-origin: center bottom; animation: fall 1s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
+    
+    .piece { position: absolute; background: #fff; border: 2px solid #eee; opacity: 0; }
+    .p1 { width: 80px; height: 90px; border-radius: 40% 10% 40% 10%; top: 50px; left: 10px; transform: rotate(-20deg); }
+    .p2 { width: 70px; height: 80px; border-radius: 10% 40% 10% 40%; top: 60px; right: 10px; transform: rotate(15deg); }
+    .p3 { width: 40px; height: 40px; border-radius: 50%; bottom: 10px; left: 70px; }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #0c0c0c;
-      color: #f0ebd8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      overflow: hidden;
+    @keyframes fall {
+      0% { transform: translateY(-500px) rotate(0deg); opacity: 1; }
+      90% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(0) scale(0); opacity: 0; }
+    }
+    
+    .broken-pieces { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .plate-broken .piece { opacity: 1; animation: scatter 0.6s ease-out forwards; }
+    
+    @keyframes scatter {
+      0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) rotate(var(--r)); opacity: 1; }
     }
 
-    /* Animated steam */
-    .plate-wrap {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 32px;
-    }
-
-    .plate-emoji {
-      font-size: 8rem;
-      animation: wobble 3s ease-in-out infinite;
-      display: block;
-      filter: drop-shadow(0 0 30px rgba(212,175,55,0.3));
-    }
-
-    @keyframes wobble {
-      0%, 100% { transform: rotate(-3deg) scale(1); }
-      50%       { transform: rotate(3deg) scale(1.05); }
-    }
-
-    .steam {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-    }
-
-    .steam span {
-      display: block;
-      width: 6px;
-      height: 40px;
-      background: linear-gradient(to top, rgba(212,175,55,0.6), transparent);
-      border-radius: 50px;
-      animation: rise 2s ease-in-out infinite;
-    }
-
-    .steam span:nth-child(2) { animation-delay: .4s; height: 30px; }
-    .steam span:nth-child(3) { animation-delay: .8s; height: 50px; }
-
-    @keyframes rise {
-      0%   { transform: translateY(0) scaleX(1); opacity: 0.6; }
-      100% { transform: translateY(-50px) scaleX(0.2); opacity: 0; }
-    }
-
-    .error-code {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(5rem, 15vw, 10rem);
-      font-weight: 700;
-      color: #d4af37;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      text-shadow: 0 0 60px rgba(212,175,55,0.25);
-      margin-bottom: 8px;
-    }
-
-    .title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-style: italic;
-      color: #f3d881;
-      margin-bottom: 16px;
-    }
-
-    .subtitle {
-      font-size: .95rem;
-      color: #a0a0a0;
-      max-width: 420px;
-      line-height: 1.7;
-      margin-bottom: 40px;
-    }
-
-    .chef-quote {
-      background: rgba(212,175,55,0.08);
-      border: 1px solid rgba(212,175,55,0.2);
-      border-radius: 16px;
-      padding: 20px 28px;
-      max-width: 440px;
-      margin-bottom: 40px;
-      font-style: italic;
-      color: #c8c0b0;
-      font-size: .9rem;
-      position: relative;
-    }
-
-    .chef-quote::before {
-      content: '"';
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 4rem;
-      color: #d4af37;
-      position: absolute;
-      top: -16px;
-      left: 16px;
-      line-height: 1;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #d4af37, #c9933a);
-      color: #000;
-      padding: 14px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: .95rem;
-      transition: all .3s;
-      box-shadow: 0 6px 20px rgba(212,175,55,0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(212,175,55,0.4);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,.07);
-      color: #f0ebd8;
-      padding: 14px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: .95rem;
-      border: 1px solid rgba(255,255,255,.12);
-      transition: all .3s;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,.12);
-      transform: translateY(-3px);
-    }
-
-    /* Floating food emojis background */
-    .bg-food {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .bg-food span {
-      position: absolute;
-      font-size: 2rem;
-      opacity: 0.04;
-      animation: floatUp linear infinite;
-    }
-
-    @keyframes floatUp {
-      from { transform: translateY(110vh) rotate(0deg); }
-      to   { transform: translateY(-20vh) rotate(360deg); }
-    }
-
-    .footer-note {
-      margin-top: 60px;
-      font-size: .78rem;
-      color: rgba(255,255,255,.2);
-    }
+    .home-btn { background: var(--gold); color: #000; text-decoration: none; padding: 14px 32px; border-radius: 30px; font-weight: 700; transition: 0.3s; display: inline-block; }
+    .home-btn:hover { transform: scale(1.05); background: #f3d881; }
   </style>
 </head>
 <body>
-
-  <!-- Background floating food -->
-  <div class="bg-food" id="bgFood"></div>
-
-  <div class="plate-wrap">
-    <div class="steam">
-      <span></span>
-      <span></span>
-      <span></span>
+  <div class="container">
+    <div class="plate-wrap" id="plateContainer">
+      <div class="plate" id="mainPlate"></div>
+      <div class="broken-pieces" id="pieces">
+        <div class="piece p1" style="--x:-60px; --y:20px; --r:-45deg;"></div>
+        <div class="piece p2" style="--x:70px; --y:30px; --r:50deg;"></div>
+        <div class="piece p3" style="--x:10px; --y:80px; --r:120deg;"></div>
+      </div>
     </div>
-    <span class="plate-emoji">🍳</span>
+    <h1>Ops! Piatto Finito.</h1>
+    <p>Questo piatto &egrave; andato in mille pezzi.<br>Lo chef sta preparando qualcosa di nuovo, nel frattempo torna al menu principale!</p>
+    <a href="index.html" class="home-btn">Torna alla Home</a>
   </div>
-
-  <div class="error-code">404</div>
-  <h1 class="title">Questo piatto non è in menù</h1>
-  <p class="subtitle">
-    La pagina che stai cercando sembra essere stata rimossa dalla cucina, rinominata o non è mai esistita nel nostro menù digitale.
-  </p>
-
-  <div class="chef-quote">
-    Un piatto che non si trova è un'occasione per scoprirne uno migliore.
-    <br><br>
-    — Chef Algoritmo, Cucina Digitale ⭐⭐⭐
-  </div>
-
-  <div class="btn-group">
-    <a href="index.html" class="btn-primary">🏠 Torna alla Home</a>
-    <a href="index.html#restaurant-grid" class="btn-secondary">🍝 Sfoglia i Ristoranti</a>
-  </div>
-
-  <p class="footer-note">© 2026 Guida Ristoranti d'Italia · Creato da Claudio Baschieri</p>
 
   <script>
-    // Generate floating food emojis
-    const foods = ['🍕','🍝','🍷','🥗','🍰','🍣','🥩','🍤','🫕','🥘','🍜','🧆','🥐','🫙','🍫'];
-    const bg = document.getElementById('bgFood');
-    for (let i = 0; i < 20; i++) {
-      const s = document.createElement('span');
-      s.textContent = foods[Math.floor(Math.random() * foods.length)];
-      s.style.left = Math.random() * 100 + 'vw';
-      s.style.top = Math.random() * 100 + 'vh';
-      s.style.animationDuration = (8 + Math.random() * 12) + 's';
-      s.style.animationDelay = (Math.random() * 8) + 's';
-      s.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
-      bg.appendChild(s);
-    }
+    setTimeout(() => {
+      document.getElementById('plateContainer').classList.add('plate-broken');
+    }, 900);
   </script>
-
 </body>
 </html>
